@@ -45,7 +45,13 @@ export interface IVoltpressBlogCategory {
 export interface IVoltpressBlogTag {
   id: string
   name: string
-  slug: string
+}
+
+export interface IVoltpressBlogPostAuthor {
+  id: string
+  name: string
+  role_title: string | null
+  image: IVoltpressModelableFile | null
 }
 
 export interface IVoltpressBlogPostListItem {
@@ -53,20 +59,23 @@ export interface IVoltpressBlogPostListItem {
   title: string
   slug: string
   excerpt: string | null
+  cover_image: string | null
+  reading_time_minutes: number | null
   published_at: string | null
   view_count: number
   is_featured: boolean
-  author: { id: string; name: string; slug: string } | null
+  author: IVoltpressBlogPostAuthor | null
+  /** First attached category acts as the primary one */
   category: IVoltpressBlogCategory | null
-  tags: string[]
-  image: IVoltpressModelableFile | null
+  categories?: IVoltpressBlogCategory[]
+  tags?: string[]
 }
 
 export interface IVoltpressBlogPostDetail extends IVoltpressBlogPostListItem {
+  /** Reserved for a future server-rendered HTML mode; always null today */
   content: string | null
   blocks: Block[] | null
   meta_title: string | null
   meta_description: string | null
   created_at: string
-  related_posts: IVoltpressBlogPostListItem[]
 }

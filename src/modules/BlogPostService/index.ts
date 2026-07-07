@@ -5,7 +5,7 @@ import type { IGetBlogPostListInput, IGetBlogPostListOutput, IGetBlogPostBySlugI
 
 export const blogPostService = {
   async getBlogPostList(input: IGetBlogPostListInput = {}): Promise<IGetBlogPostListOutput> {
-    const response = await voltpressFetch<IVoltpressApiResponse<unknown>>(
+    const response = await voltpressFetch<IVoltpressApiResponse<{ blog_posts: IVoltpressBlogPostListItem[] }>>(
       '/api/blog-post/list',
       {
         blog_category_id: input.blog_category_id,
@@ -18,13 +18,7 @@ export const blogPostService = {
       },
     )
 
-    console.log('[BlogPostService] response.data keys:', Object.keys(response.data as object))
-    console.log('[BlogPostService] response.data sample:', JSON.stringify(response.data).slice(0, 300))
-
-    const data = response.data as any
-    // Handle both direct array, {posts:[...]}, and paginated {posts:{data:[...]}}
-    const blogPosts = data?.blog_posts ?? data?.data ?? data
-    return (Array.isArray(blogPosts) ? blogPosts : blogPosts?.data ?? []) as IVoltpressBlogPostListItem[]
+    return response.data.blog_posts ?? []
   },
 
   async getBlogPostBySlug(input: IGetBlogPostBySlugInput): Promise<IGetBlogPostBySlugOutput> {

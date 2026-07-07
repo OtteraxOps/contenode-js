@@ -1,8 +1,8 @@
 import type { IVoltpressBlogPostListItem, IVoltpressBlogPostDetail } from '../../types/model.js'
 
 export interface IGetBlogPostListInput {
-  blog_category_id?: number
-  blog_tag_id?: number
+  blog_category_id?: string
+  blog_tag_id?: string
   page?: number
   items_per_page?: number
   sort_by?: string

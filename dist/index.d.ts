@@ -103,24 +103,31 @@ interface IVoltpressBlogCategory {
 interface IVoltpressBlogTag {
     id: string;
     name: string;
-    slug: string;
+}
+interface IVoltpressBlogPostAuthor {
+    id: string;
+    name: string;
+    role_title: string | null;
+    image: IVoltpressModelableFile | null;
 }
 interface IVoltpressBlogPostListItem {
     id: string;
     title: string;
     slug: string;
     excerpt: string | null;
+    cover_image: string | null;
+    reading_time_minutes: number | null;
     published_at: string | null;
     view_count: number;
-    author: {
-        id: string;
-        name: string;
-    } | null;
+    is_featured: boolean;
+    author: IVoltpressBlogPostAuthor | null;
+    /** First attached category acts as the primary one */
     category: IVoltpressBlogCategory | null;
-    tags: IVoltpressBlogTag[];
-    image: IVoltpressModelableFile | null;
+    categories?: IVoltpressBlogCategory[];
+    tags?: string[];
 }
 interface IVoltpressBlogPostDetail extends IVoltpressBlogPostListItem {
+    /** Reserved for a future server-rendered HTML mode; always null today */
     content: string | null;
     blocks: Block[] | null;
     meta_title: string | null;
@@ -151,16 +158,18 @@ declare const teamMemberService: {
 };
 
 interface IGetBlogPostListInput {
-    blog_category_id?: number;
-    blog_tag_id?: number;
+    blog_category_id?: string;
+    blog_tag_id?: string;
     page?: number;
     items_per_page?: number;
     sort_by?: string;
     search?: string;
+    is_featured?: boolean;
 }
 type IGetBlogPostListOutput = IVoltpressBlogPostListItem[];
 interface IGetBlogPostBySlugInput {
     slug: string;
+    related_posts_limit?: number;
 }
 type IGetBlogPostBySlugOutput = IVoltpressBlogPostDetail;
 

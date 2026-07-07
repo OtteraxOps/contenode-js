@@ -109,18 +109,18 @@ var blogPostService = {
         page: input.page,
         items_per_page: input.items_per_page,
         sort_by: input.sort_by,
-        search: input.search
+        search: input.search,
+        is_featured: input.is_featured !== void 0 ? Number(input.is_featured) : void 0
       }
     );
-    console.log("[BlogPostService] response.data keys:", Object.keys(response.data));
-    console.log("[BlogPostService] response.data sample:", JSON.stringify(response.data).slice(0, 300));
-    const data = response.data;
-    const blogPosts = data?.blog_posts ?? data?.data ?? data;
-    return Array.isArray(blogPosts) ? blogPosts : blogPosts?.data ?? [];
+    return response.data.blog_posts ?? [];
   },
   async getBlogPostBySlug(input) {
     const response = await voltpressFetch(
-      `/api/blog-post/${input.slug}`
+      `/api/blog-post/${input.slug}`,
+      {
+        related_posts_limit: input.related_posts_limit
+      }
     );
     return response.data.blog_post;
   }
