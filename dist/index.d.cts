@@ -3,8 +3,15 @@ interface VoltpressConfig {
     clientId: string;
     clientSecret: string;
 }
-declare function configureVoltpress(config: VoltpressConfig): void;
-declare function isVoltpressConfigured(): boolean;
+declare function createVoltpress(config: VoltpressConfig): {
+    collection<T = Record<string, unknown>>(slug: string): {
+        list(input?: ICollectionListInput): Promise<ICollectionListOutput<T>>;
+        find(entrySlug: string, input?: ICollectionFindInput): Promise<IVoltpressCollectionEntry<T>>;
+    };
+    global<T = Record<string, unknown>>(slug: string): {
+        get(input?: IGlobalGetInput): Promise<IGlobalGetOutput<T>>;
+    };
+};
 
 interface IVoltpressApiResponse<T> {
     message: string;
@@ -65,117 +72,64 @@ type Block = {
     type: 'divider';
 };
 
-interface IVoltpressModelableFile {
+interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
     id: string;
-    name: string;
-    thumbnail_url: string;
-    file_url: string;
-    created_at: string;
-}
-interface IVoltpressFaqCategory {
-    id: string;
-    name: string;
     slug: string;
-    sort_order: number;
-}
-interface IVoltpressFaqItem {
-    id: string;
-    faq_category_id: string | null;
-    question: string;
-    answer: string;
-    sort_order: number;
-    category?: IVoltpressFaqCategory;
-}
-interface IVoltpressTeamMember {
-    id: string;
-    name: string;
-    role_title: string;
-    bio: string;
-    meta: Record<string, unknown> | null;
-    sort_order: number;
-    image: IVoltpressModelableFile;
-}
-interface IVoltpressBlogCategory {
-    id: string;
-    name: string;
-    slug: string;
-}
-interface IVoltpressBlogTag {
-    id: string;
-    name: string;
-}
-interface IVoltpressBlogPostAuthor {
-    id: string;
-    name: string;
-    role_title: string | null;
-    image: IVoltpressModelableFile | null;
-}
-interface IVoltpressBlogPostListItem {
-    id: string;
     title: string;
-    slug: string;
-    excerpt: string | null;
-    cover_image: string | null;
-    reading_time_minutes: number | null;
+    data: T;
+    sort_order: number;
+    status: 'draft' | 'published';
     published_at: string | null;
-    view_count: number;
-    is_featured: boolean;
-    author: IVoltpressBlogPostAuthor | null;
-    /** First attached category acts as the primary one */
-    category: IVoltpressBlogCategory | null;
-    categories?: IVoltpressBlogCategory[];
-    tags?: string[];
 }
-interface IVoltpressBlogPostDetail extends IVoltpressBlogPostListItem {
-    /** Reserved for a future server-rendered HTML mode; always null today */
-    content: string | null;
-    blocks: Block[] | null;
-    meta_title: string | null;
-    meta_description: string | null;
+interface IVoltpressGlobal<T = Record<string, unknown>> {
+    id: string;
+    data: T;
+    updated_at: string;
+}
+interface IVoltpressMedia {
+    id: string;
+    name: string;
+    file_url: string;
+    thumbnail_url: string;
     created_at: string;
 }
-
-interface IGetFaqListInput {
-    placement?: string;
-    faq_category_id?: string;
-    page?: number;
-    items_per_page?: number;
+interface IVoltpressPaginationMeta {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
 }
-type IGetFaqListOutput = IVoltpressFaqItem[];
 
-declare const faqService: {
-    getFaqList(input?: IGetFaqListInput): Promise<IGetFaqListOutput>;
-};
-
-interface IGetTeamMemberListInput {
+interface ICollectionListInput {
+    locale?: string;
     page?: number;
     items_per_page?: number;
-}
-type IGetTeamMemberListOutput = IVoltpressTeamMember[];
-
-declare const teamMemberService: {
-    getTeamMemberList(input?: IGetTeamMemberListInput): Promise<IGetTeamMemberListOutput>;
-};
-
-interface IGetBlogPostListInput {
-    blog_category_id?: string;
-    blog_tag_id?: string;
-    page?: number;
-    items_per_page?: number;
-    sort_by?: string;
     search?: string;
-    is_featured?: boolean;
+    sort_by?: string;
+    status?: 'draft' | 'published';
+    [key: string]: string | number | undefined;
 }
-type IGetBlogPostListOutput = IVoltpressBlogPostListItem[];
-interface IGetBlogPostBySlugInput {
-    slug: string;
-    related_posts_limit?: number;
+interface ICollectionListOutput<T> {
+    locale: string | null;
+    entries: IVoltpressCollectionEntry<T>[];
+    meta: IVoltpressPaginationMeta;
 }
-type IGetBlogPostBySlugOutput = IVoltpressBlogPostDetail;
+interface ICollectionFindInput {
+    locale?: string;
+    depth?: 0 | 1;
+}
 
-declare const blogPostService: {
-    getBlogPostList(input?: IGetBlogPostListInput): Promise<IGetBlogPostListOutput>;
-    getBlogPostBySlug(input: IGetBlogPostBySlugInput): Promise<IGetBlogPostBySlugOutput>;
-};
+interface IGlobalGetInput {
+    locale?: string;
+}
+interface IGlobalGetOutput<T> {
+    collection: {
+        id: string;
+        name: string;
+        slug: string;
+        fields: unknown[];
+    };
+    entry: IVoltpressGlobal<T> | null;
+}
 
-export { type Block, type IGetBlogPostBySlugInput, type IGetBlogPostBySlugOutput, type IGetBlogPostListInput, type IGetBlogPostListOutput, type IGetFaqListInput, type IGetFaqListOutput, type IGetTeamMemberListInput, type IGetTeamMemberListOutput, type IVoltpressApiResponse, type IVoltpressBlogCategory, type IVoltpressBlogPostDetail, type IVoltpressBlogPostListItem, type IVoltpressBlogTag, type IVoltpressFaqCategory, type IVoltpressFaqItem, type IVoltpressModelableFile, type IVoltpressTeamMember, type InlineContent, type Mark, type TableRow, type VoltpressConfig, blogPostService, configureVoltpress, faqService, isVoltpressConfigured, teamMemberService };
+export { type Block, type ICollectionFindInput, type ICollectionListInput, type ICollectionListOutput, type IGlobalGetInput, type IGlobalGetOutput, type IVoltpressApiResponse, type IVoltpressCollectionEntry, type IVoltpressGlobal, type IVoltpressMedia, type IVoltpressPaginationMeta, type InlineContent, type Mark, type TableRow, type VoltpressConfig, createVoltpress };
