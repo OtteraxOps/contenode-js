@@ -82,15 +82,21 @@ function createCollectionService(slug, fetch2) {
   return {
     async list(input = {}) {
       const response = await fetch2(
-        `/api/collection/${slug}/list`,
+        `/api/collection/${slug}/entries`,
         input
       );
       return response.data;
     },
     async find(entrySlug, input = {}) {
       const response = await fetch2(
-        `/api/collection/${slug}/${entrySlug}`,
+        `/api/collection/${slug}/entries/${entrySlug}`,
         input
+      );
+      return response.data;
+    },
+    async schema() {
+      const response = await fetch2(
+        `/api/collection/${slug}/schema`
       );
       return response.data;
     }
@@ -110,10 +116,22 @@ function createGlobalService(slug, fetch2) {
   };
 }
 
+// src/modules/ManifestService/index.ts
+function createManifestService(fetch2) {
+  return {
+    async get() {
+      const response = await fetch2("/api/manifest");
+      return response.data;
+    }
+  };
+}
+
 // src/config.ts
 function createVoltpress(config) {
   const fetch2 = createVoltpressFetch(config);
+  const manifestService = createManifestService(fetch2);
   return {
+    manifest: manifestService,
     collection(slug) {
       return createCollectionService(slug, fetch2);
     },

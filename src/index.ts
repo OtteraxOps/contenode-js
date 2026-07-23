@@ -12,6 +12,14 @@ export type {
   IVoltpressPaginationMeta,
 } from './types/collection.js'
 
-export type { ICollectionListInput, ICollectionListOutput, ICollectionFindInput } from './modules/CollectionService/types.js'
+export type { ICollectionListInput, ICollectionListOutput, ICollectionFindInput, ICollectionSchemaOutput } from './modules/CollectionService/types.js'
 
 export type { IGlobalGetInput, IGlobalGetOutput } from './modules/GlobalService/types.js'
+
+export type {
+  IVoltpressManifest,
+  IVoltpressLocale,
+  IVoltpressSchemaEntry,
+  IVoltpressFormManifest,
+  IVoltpressFieldDefinition,
+} from './modules/ManifestService/types.js'

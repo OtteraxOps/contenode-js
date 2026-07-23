@@ -20,3 +20,12 @@ export interface ICollectionFindInput {
   locale?: string
   depth?: 0 | 1
 }
+
+export interface ICollectionSchemaOutput {
+  schema: {
+    slug: string
+    name: string
+    kind: 'collection'
+    fields: Record<string, unknown>[]
+  }
+}

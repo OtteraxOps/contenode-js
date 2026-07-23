@@ -5,6 +5,5 @@ export interface IGlobalGetInput {
 }
 
 export interface IGlobalGetOutput<T> {
-  collection: { id: string; name: string; slug: string; fields: unknown[] }
-  entry: IVoltpressGlobal<T> | null
+  global: IVoltpressGlobal<T> | null
 }

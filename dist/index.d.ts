@@ -4,9 +4,13 @@ interface VoltpressConfig {
     clientSecret: string;
 }
 declare function createVoltpress(config: VoltpressConfig): {
+    manifest: {
+        get(): Promise<IVoltpressManifest>;
+    };
     collection<T = Record<string, unknown>>(slug: string): {
         list(input?: ICollectionListInput): Promise<ICollectionListOutput<T>>;
         find(entrySlug: string, input?: ICollectionFindInput): Promise<IVoltpressCollectionEntry<T>>;
+        schema(): Promise<ICollectionSchemaOutput>;
     };
     global<T = Record<string, unknown>>(slug: string): {
         get(input?: IGlobalGetInput): Promise<IGlobalGetOutput<T>>;
@@ -118,18 +122,46 @@ interface ICollectionFindInput {
     locale?: string;
     depth?: 0 | 1;
 }
+interface ICollectionSchemaOutput {
+    schema: {
+        slug: string;
+        name: string;
+        kind: 'collection';
+        fields: Record<string, unknown>[];
+    };
+}
 
 interface IGlobalGetInput {
     locale?: string;
 }
 interface IGlobalGetOutput<T> {
-    collection: {
-        id: string;
-        name: string;
-        slug: string;
-        fields: unknown[];
-    };
-    entry: IVoltpressGlobal<T> | null;
+    global: IVoltpressGlobal<T> | null;
 }
 
-export { type Block, type ICollectionFindInput, type ICollectionListInput, type ICollectionListOutput, type IGlobalGetInput, type IGlobalGetOutput, type IVoltpressApiResponse, type IVoltpressCollectionEntry, type IVoltpressGlobal, type IVoltpressMedia, type IVoltpressPaginationMeta, type InlineContent, type Mark, type TableRow, type VoltpressConfig, createVoltpress };
+interface IVoltpressLocale {
+    locale: string;
+    is_default: boolean;
+}
+interface IVoltpressFieldDefinition {
+    [key: string]: unknown;
+}
+interface IVoltpressSchemaEntry {
+    slug: string;
+    name: string;
+    fields: IVoltpressFieldDefinition[];
+}
+interface IVoltpressFormManifest {
+    captcha_provider: string;
+    turnstile_site_key: string;
+    contact_form_schema: IVoltpressFieldDefinition[];
+    contact_form_message: string;
+    contact_form_success_message: string;
+}
+interface IVoltpressManifest {
+    locales: IVoltpressLocale[];
+    collections: IVoltpressSchemaEntry[];
+    globals: IVoltpressSchemaEntry[];
+    form: IVoltpressFormManifest;
+}
+
+export { type Block, type ICollectionFindInput, type ICollectionListInput, type ICollectionListOutput, type ICollectionSchemaOutput, type IGlobalGetInput, type IGlobalGetOutput, type IVoltpressApiResponse, type IVoltpressCollectionEntry, type IVoltpressFieldDefinition, type IVoltpressFormManifest, type IVoltpressGlobal, type IVoltpressLocale, type IVoltpressManifest, type IVoltpressMedia, type IVoltpressPaginationMeta, type IVoltpressSchemaEntry, type InlineContent, type Mark, type TableRow, type VoltpressConfig, createVoltpress };
