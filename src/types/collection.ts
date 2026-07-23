@@ -8,9 +8,7 @@ export interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
   published_at: string | null
 }
 
-export interface IVoltpressGlobal<T = Record<string, unknown>> {
-  id: string
-  data: T
+export type IVoltpressGlobal<T = Record<string, unknown>> = T & {
   updated_at: string
 }
 

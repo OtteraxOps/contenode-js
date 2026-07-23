@@ -85,11 +85,9 @@ interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
     status: 'draft' | 'published';
     published_at: string | null;
 }
-interface IVoltpressGlobal<T = Record<string, unknown>> {
-    id: string;
-    data: T;
+type IVoltpressGlobal<T = Record<string, unknown>> = T & {
     updated_at: string;
-}
+};
 interface IVoltpressMedia {
     id: string;
     name: string;
