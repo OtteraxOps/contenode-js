@@ -3,9 +3,7 @@ import { createCollectionService } from './modules/CollectionService/index.js'
 import { createGlobalService } from './modules/GlobalService/index.js'
 import { createManifestService } from './modules/ManifestService/index.js'
 
-export type VoltpressConfig =
-  | { apiUrl: string; deliveryToken: string }
-  | { apiUrl: string; clientId: string; clientSecret: string }
+export type VoltpressConfig = { apiUrl: string; deliveryToken: string }
 
 export function createVoltpress(config: VoltpressConfig) {
   const fetch = createVoltpressFetch(config)

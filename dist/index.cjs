@@ -25,49 +25,9 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 
 // src/client.ts
-var TOKEN_TTL_MS = 60 * 60 * 1e3;
 function createVoltpressFetch(config) {
-  const isDeliveryAuth = "deliveryToken" in config;
-  let _cachedToken = null;
-  let _tokenExpiresAt = 0;
-  async function fetchAccessToken() {
-    const response = await fetch(`${config.apiUrl}/oauth/token`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        grant_type: "client_credentials",
-        client_id: config.clientId,
-        client_secret: config.clientSecret
-      })
-    });
-    if (!response.ok) {
-      throw new Error(`[voltpress/js] OAuth token request failed: ${response.status} ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data.access_token;
-  }
-  async function getAccessToken() {
-    if (_cachedToken && Date.now() < _tokenExpiresAt) {
-      return _cachedToken;
-    }
-    _cachedToken = await fetchAccessToken();
-    _tokenExpiresAt = Date.now() + TOKEN_TTL_MS;
-    return _cachedToken;
-  }
-  function buildAuthHeaders(token) {
-    if (isDeliveryAuth) {
-      return { "X-Delivery-Token": token };
-    }
-    return { Authorization: `Bearer ${token}` };
-  }
-  async function resolveToken() {
-    if (isDeliveryAuth) {
-      return config.deliveryToken;
-    }
-    return getAccessToken();
-  }
   return async function voltpressFetch(path, query) {
-    const token = await resolveToken();
+    const token = config.deliveryToken;
     const url = new URL(`${config.apiUrl}${path}`);
     if (query) {
       for (const [key, value] of Object.entries(query)) {
@@ -78,7 +38,7 @@ function createVoltpressFetch(config) {
     }
     const response = await fetch(url.toString(), {
       headers: {
-        ...buildAuthHeaders(token),
+        "X-Delivery-Token": token,
         Accept: "application/json"
       }
     });
