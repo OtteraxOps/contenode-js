@@ -9,6 +9,8 @@ interface OAuthTokenResponse {
 }
 
 export function createVoltpressFetch(config: VoltpressConfig) {
+  const isDeliveryAuth = 'deliveryToken' in config
+
   let _cachedToken: string | null = null
   let _tokenExpiresAt: number = 0
 
@@ -18,8 +20,8 @@ export function createVoltpressFetch(config: VoltpressConfig) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         grant_type: 'client_credentials',
-        client_id: config.clientId,
-        client_secret: config.clientSecret,
+        client_id: (config as { clientId: string; clientSecret: string }).clientId,
+        client_secret: (config as { clientId: string; clientSecret: string }).clientSecret,
       }),
     })
 
@@ -42,8 +44,22 @@ export function createVoltpressFetch(config: VoltpressConfig) {
     return _cachedToken
   }
 
+  function buildAuthHeaders(token: string): Record<string, string> {
+    if (isDeliveryAuth) {
+      return { 'X-Delivery-Token': token }
+    }
+    return { Authorization: `Bearer ${token}` }
+  }
+
+  async function resolveToken(): Promise<string> {
+    if (isDeliveryAuth) {
+      return (config as { deliveryToken: string }).deliveryToken
+    }
+    return getAccessToken()
+  }
+
   return async function voltpressFetch<T>(path: string, query?: Record<string, string | number | undefined>): Promise<T> {
-    const token = await getAccessToken()
+    const token = await resolveToken()
     const url = new URL(`${config.apiUrl}${path}`)
 
     if (query) {
@@ -56,7 +72,7 @@ export function createVoltpressFetch(config: VoltpressConfig) {
 
     const response = await fetch(url.toString(), {
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...buildAuthHeaders(token),
         Accept: 'application/json',
       },
     })

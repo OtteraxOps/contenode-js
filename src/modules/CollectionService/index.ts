@@ -16,12 +16,14 @@ export function createCollectionService<T = Record<string, unknown>>(slug: strin
     },
 
     async find(entrySlug: string, input: ICollectionFindInput = {}): Promise<IVoltpressCollectionEntry<T>> {
-      const response = await fetch<IVoltpressApiResponse<IVoltpressCollectionEntry<T>>>(
+      const response = await fetch<IVoltpressApiResponse<{ entry: IVoltpressCollectionEntry<T> } | IVoltpressCollectionEntry<T>>>(
         `/api/collection/${slug}/entries/${entrySlug}`,
         input as Record<string, string | number | undefined>,
       )
 
-      return response.data
+      // API wraps entry under data.entry; fall back to data directly for older responses
+      const data = response.data as any
+      return data?.entry ?? data
     },
 
     async schema(): Promise<ICollectionSchemaOutput> {

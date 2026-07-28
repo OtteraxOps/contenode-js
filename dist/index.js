@@ -1,6 +1,7 @@
 // src/client.ts
 var TOKEN_TTL_MS = 60 * 60 * 1e3;
 function createVoltpressFetch(config) {
+  const isDeliveryAuth = "deliveryToken" in config;
   let _cachedToken = null;
   let _tokenExpiresAt = 0;
   async function fetchAccessToken() {
@@ -27,8 +28,20 @@ function createVoltpressFetch(config) {
     _tokenExpiresAt = Date.now() + TOKEN_TTL_MS;
     return _cachedToken;
   }
+  function buildAuthHeaders(token) {
+    if (isDeliveryAuth) {
+      return { "X-Delivery-Token": token };
+    }
+    return { Authorization: `Bearer ${token}` };
+  }
+  async function resolveToken() {
+    if (isDeliveryAuth) {
+      return config.deliveryToken;
+    }
+    return getAccessToken();
+  }
   return async function voltpressFetch(path, query) {
-    const token = await getAccessToken();
+    const token = await resolveToken();
     const url = new URL(`${config.apiUrl}${path}`);
     if (query) {
       for (const [key, value] of Object.entries(query)) {
@@ -39,7 +52,7 @@ function createVoltpressFetch(config) {
     }
     const response = await fetch(url.toString(), {
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...buildAuthHeaders(token),
         Accept: "application/json"
       }
     });
@@ -66,7 +79,8 @@ function createCollectionService(slug, fetch2) {
         `/api/collection/${slug}/entries/${entrySlug}`,
         input
       );
-      return response.data;
+      const data = response.data;
+      return data?.entry ?? data;
     },
     async schema() {
       const response = await fetch2(

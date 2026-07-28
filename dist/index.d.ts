@@ -1,8 +1,11 @@
-interface VoltpressConfig {
+type VoltpressConfig = {
+    apiUrl: string;
+    deliveryToken: string;
+} | {
     apiUrl: string;
     clientId: string;
     clientSecret: string;
-}
+};
 declare function createVoltpress(config: VoltpressConfig): {
     manifest: {
         get(): Promise<IVoltpressManifest>;
