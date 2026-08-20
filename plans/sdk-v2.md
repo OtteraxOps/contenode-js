@@ -1,3 +1,5 @@
+> ⚠️ **HISTORICAL / SUPERSEDED** — Dated 2026-07-18. Describes an OAuth-based client-credentials auth flow (`clientId`/`clientSecret`) and a token cache that were removed (see commit `b108005`, "refactor(auth): delivery-token only — drop OAuth path") and type shapes (`IGlobalGetOutput`, `IVoltpressGlobal`) that were later changed. Does not mention `manifest.get()` or `collection().schema()`, which are now part of the API surface. Does not reflect the current SDK API. See [CLAUDE.md](../CLAUDE.md) for the current, accurate API reference.
+
 # voltpress-js SDK v2 — Collections-First Refactor
 > Created: 2026-07-18
 
