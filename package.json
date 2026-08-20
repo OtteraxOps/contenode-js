@@ -1,5 +1,5 @@
 {
-  "name": "@voltpress/js",
+  "name": "@voltpress/sdk",
   "version": "0.1.0",
   "description": "Framework-agnostic JavaScript SDK for Voltpress CMS",
   "type": "module",
