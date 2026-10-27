@@ -1,11 +1,11 @@
-# @voltpress/sdk — SDK Developer Guide
+# @contenode/sdk — SDK Developer Guide
 
 TypeScript SDK for consuming the VoltPress headless CMS delivery API.
 
 ## Client API
 
 ```typescript
-import { createVoltpress } from '@voltpress/sdk'
+import { createVoltpress } from '@contenode/sdk'
 
 const voltpress = createVoltpress({
   apiUrl: 'https://api.example.com',
@@ -49,7 +49,7 @@ const settings = await voltpress.global<ISiteSettingsFields>('site-settings').ge
 | `ICollectionListInput` | page, items_per_page, locale, search, sort_by, status, field filters |
 | `Block` | Discriminated union for richtext blocks (paragraph, heading, image, table…) |
 
-All types exported from `@voltpress/sdk`.
+All types exported from `@contenode/sdk`.
 
 ## Manifest Response Shape
 

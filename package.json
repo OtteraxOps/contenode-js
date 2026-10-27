@@ -1,7 +1,7 @@
 {
-  "name": "@voltpress/sdk",
+  "name": "@contenode/sdk",
   "version": "0.1.0",
-  "description": "Framework-agnostic JavaScript SDK for Voltpress CMS",
+  "description": "Framework-agnostic JavaScript SDK for Contenode CMS",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -23,6 +23,6 @@
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
   },
-  "keywords": ["voltpress", "cms", "api", "sdk"],
+  "keywords": ["contenode", "cms", "api", "sdk"],
   "license": "MIT"
 }
