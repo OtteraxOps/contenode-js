@@ -1,12 +1,12 @@
-import type { IVoltpressApiResponse } from '../../types/index.js'
-import type { IVoltpressManifest } from './types.js'
+import type { IContenodeApiResponse } from '../../types/index.js'
+import type { IContenodeManifest } from './types.js'
 
-type VoltpressFetch = <T>(path: string, query?: Record<string, string | number | undefined>) => Promise<T>
+type ContenodeFetch = <T>(path: string, query?: Record<string, string | number | undefined>) => Promise<T>
 
-export function createManifestService(fetch: VoltpressFetch) {
+export function createManifestService(fetch: ContenodeFetch) {
   return {
-    async get(): Promise<IVoltpressManifest> {
-      const response = await fetch<IVoltpressApiResponse<IVoltpressManifest>>('/api/manifest')
+    async get(): Promise<IContenodeManifest> {
+      const response = await fetch<IContenodeApiResponse<IContenodeManifest>>('/api/manifest')
       return response.data
     },
   }

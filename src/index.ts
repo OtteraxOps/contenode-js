@@ -1,15 +1,15 @@
-export { createVoltpress } from './config.js'
-export type { VoltpressConfig } from './config.js'
+export { createContenode } from './config.js'
+export type { ContenodeConfig } from './config.js'
 
-export type { IVoltpressApiResponse } from './types/index.js'
+export type { IContenodeApiResponse } from './types/index.js'
 
 export type { Block, Mark, InlineContent, TableRow } from './types/block.js'
 
 export type {
-  IVoltpressCollectionEntry,
-  IVoltpressGlobal,
-  IVoltpressMedia,
-  IVoltpressPaginationMeta,
+  IContenodeCollectionEntry,
+  IContenodeGlobal,
+  IContenodeMedia,
+  IContenodePaginationMeta,
 } from './types/collection.js'
 
 export type { ICollectionListInput, ICollectionListOutput, ICollectionFindInput, ICollectionSchemaOutput } from './modules/CollectionService/types.js'
@@ -17,9 +17,9 @@ export type { ICollectionListInput, ICollectionListOutput, ICollectionFindInput,
 export type { IGlobalGetInput, IGlobalGetOutput } from './modules/GlobalService/types.js'
 
 export type {
-  IVoltpressManifest,
-  IVoltpressLocale,
-  IVoltpressSchemaEntry,
-  IVoltpressFormManifest,
-  IVoltpressFieldDefinition,
+  IContenodeManifest,
+  IContenodeLocale,
+  IContenodeSchemaEntry,
+  IContenodeFormManifest,
+  IContenodeFieldDefinition,
 } from './modules/ManifestService/types.js'

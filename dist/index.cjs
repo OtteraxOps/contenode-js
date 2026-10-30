@@ -20,13 +20,13 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  createVoltpress: () => createVoltpress
+  createContenode: () => createContenode
 });
 module.exports = __toCommonJS(index_exports);
 
 // src/client.ts
-function createVoltpressFetch(config) {
-  return async function voltpressFetch(path, query) {
+function createContenodeFetch(config) {
+  return async function contenodeFetch(path, query) {
     const token = config.deliveryToken;
     const url = new URL(`${config.apiUrl}${path}`);
     if (query) {
@@ -44,7 +44,7 @@ function createVoltpressFetch(config) {
     });
     if (!response.ok) {
       const body = await response.text();
-      throw new Error(`[voltpress/js] Request failed: ${response.status} ${response.statusText} \u2014 ${url.toString()} | body: ${body}`);
+      throw new Error(`[contenode/js] Request failed: ${response.status} ${response.statusText} \u2014 ${url.toString()} | body: ${body}`);
     }
     return response.json();
   };
@@ -101,8 +101,8 @@ function createManifestService(fetch2) {
 }
 
 // src/config.ts
-function createVoltpress(config) {
-  const fetch2 = createVoltpressFetch(config);
+function createContenode(config) {
+  const fetch2 = createContenodeFetch(config);
   const manifestService = createManifestService(fetch2);
   return {
     manifest: manifestService,
@@ -116,5 +116,5 @@ function createVoltpress(config) {
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  createVoltpress
+  createContenode
 });

@@ -1,14 +1,14 @@
-type VoltpressConfig = {
+type ContenodeConfig = {
     apiUrl: string;
     deliveryToken: string;
 };
-declare function createVoltpress(config: VoltpressConfig): {
+declare function createContenode(config: ContenodeConfig): {
     manifest: {
-        get(): Promise<IVoltpressManifest>;
+        get(): Promise<IContenodeManifest>;
     };
     collection<T = Record<string, unknown>>(slug: string): {
         list(input?: ICollectionListInput): Promise<ICollectionListOutput<T>>;
-        find(entrySlug: string, input?: ICollectionFindInput): Promise<IVoltpressCollectionEntry<T>>;
+        find(entrySlug: string, input?: ICollectionFindInput): Promise<IContenodeCollectionEntry<T>>;
         schema(): Promise<ICollectionSchemaOutput>;
     };
     global<T = Record<string, unknown>>(slug: string): {
@@ -16,7 +16,7 @@ declare function createVoltpress(config: VoltpressConfig): {
     };
 };
 
-interface IVoltpressApiResponse<T> {
+interface IContenodeApiResponse<T> {
     message: string;
     data: T;
 }
@@ -75,7 +75,7 @@ type Block = {
     type: 'divider';
 };
 
-interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
+interface IContenodeCollectionEntry<T = Record<string, unknown>> {
     id: string;
     slug: string;
     title: string;
@@ -84,17 +84,17 @@ interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
     status: 'draft' | 'published';
     published_at: string | null;
 }
-type IVoltpressGlobal<T = Record<string, unknown>> = T & {
+type IContenodeGlobal<T = Record<string, unknown>> = T & {
     updated_at: string;
 };
-interface IVoltpressMedia {
+interface IContenodeMedia {
     id: string;
     name: string;
     file_url: string;
     thumbnail_url: string;
     created_at: string;
 }
-interface IVoltpressPaginationMeta {
+interface IContenodePaginationMeta {
     current_page: number;
     last_page: number;
     per_page: number;
@@ -112,8 +112,8 @@ interface ICollectionListInput {
 }
 interface ICollectionListOutput<T> {
     locale: string | null;
-    entries: IVoltpressCollectionEntry<T>[];
-    meta: IVoltpressPaginationMeta;
+    entries: IContenodeCollectionEntry<T>[];
+    meta: IContenodePaginationMeta;
 }
 interface ICollectionFindInput {
     locale?: string;
@@ -132,33 +132,33 @@ interface IGlobalGetInput {
     locale?: string;
 }
 interface IGlobalGetOutput<T> {
-    global: IVoltpressGlobal<T> | null;
+    global: IContenodeGlobal<T> | null;
 }
 
-interface IVoltpressLocale {
+interface IContenodeLocale {
     locale: string;
     is_default: boolean;
 }
-interface IVoltpressFieldDefinition {
+interface IContenodeFieldDefinition {
     [key: string]: unknown;
 }
-interface IVoltpressSchemaEntry {
+interface IContenodeSchemaEntry {
     slug: string;
     name: string;
-    fields: IVoltpressFieldDefinition[];
+    fields: IContenodeFieldDefinition[];
 }
-interface IVoltpressFormManifest {
+interface IContenodeFormManifest {
     captcha_provider: string;
     turnstile_site_key: string;
-    contact_form_schema: IVoltpressFieldDefinition[];
+    contact_form_schema: IContenodeFieldDefinition[];
     contact_form_message: string;
     contact_form_success_message: string;
 }
-interface IVoltpressManifest {
-    locales: IVoltpressLocale[];
-    collections: IVoltpressSchemaEntry[];
-    globals: IVoltpressSchemaEntry[];
-    form: IVoltpressFormManifest;
+interface IContenodeManifest {
+    locales: IContenodeLocale[];
+    collections: IContenodeSchemaEntry[];
+    globals: IContenodeSchemaEntry[];
+    form: IContenodeFormManifest;
 }
 
-export { type Block, type ICollectionFindInput, type ICollectionListInput, type ICollectionListOutput, type ICollectionSchemaOutput, type IGlobalGetInput, type IGlobalGetOutput, type IVoltpressApiResponse, type IVoltpressCollectionEntry, type IVoltpressFieldDefinition, type IVoltpressFormManifest, type IVoltpressGlobal, type IVoltpressLocale, type IVoltpressManifest, type IVoltpressMedia, type IVoltpressPaginationMeta, type IVoltpressSchemaEntry, type InlineContent, type Mark, type TableRow, type VoltpressConfig, createVoltpress };
+export { type Block, type ContenodeConfig, type ICollectionFindInput, type ICollectionListInput, type ICollectionListOutput, type ICollectionSchemaOutput, type IContenodeApiResponse, type IContenodeCollectionEntry, type IContenodeFieldDefinition, type IContenodeFormManifest, type IContenodeGlobal, type IContenodeLocale, type IContenodeManifest, type IContenodeMedia, type IContenodePaginationMeta, type IContenodeSchemaEntry, type IGlobalGetInput, type IGlobalGetOutput, type InlineContent, type Mark, type TableRow, createContenode };
