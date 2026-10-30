@@ -1,29 +1,29 @@
-export interface IVoltpressLocale {
+export interface IContenodeLocale {
   locale: string
   is_default: boolean
 }
 
-export interface IVoltpressFieldDefinition {
+export interface IContenodeFieldDefinition {
   [key: string]: unknown
 }
 
-export interface IVoltpressSchemaEntry {
+export interface IContenodeSchemaEntry {
   slug: string
   name: string
-  fields: IVoltpressFieldDefinition[]
+  fields: IContenodeFieldDefinition[]
 }
 
-export interface IVoltpressFormManifest {
+export interface IContenodeFormManifest {
   captcha_provider: string
   turnstile_site_key: string
-  contact_form_schema: IVoltpressFieldDefinition[]
+  contact_form_schema: IContenodeFieldDefinition[]
   contact_form_message: string
   contact_form_success_message: string
 }
 
-export interface IVoltpressManifest {
-  locales: IVoltpressLocale[]
-  collections: IVoltpressSchemaEntry[]
-  globals: IVoltpressSchemaEntry[]
-  form: IVoltpressFormManifest
+export interface IContenodeManifest {
+  locales: IContenodeLocale[]
+  collections: IContenodeSchemaEntry[]
+  globals: IContenodeSchemaEntry[]
+  form: IContenodeFormManifest
 }

@@ -1,4 +1,4 @@
-import type { IVoltpressCollectionEntry, IVoltpressPaginationMeta } from '../../types/collection.js'
+import type { IContenodeCollectionEntry, IContenodePaginationMeta } from '../../types/collection.js'
 
 export interface ICollectionListInput {
   locale?: string
@@ -12,8 +12,8 @@ export interface ICollectionListInput {
 
 export interface ICollectionListOutput<T> {
   locale: string | null
-  entries: IVoltpressCollectionEntry<T>[]
-  meta: IVoltpressPaginationMeta
+  entries: IContenodeCollectionEntry<T>[]
+  meta: IContenodePaginationMeta
 }
 
 export interface ICollectionFindInput {

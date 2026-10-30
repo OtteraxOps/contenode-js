@@ -1,12 +1,12 @@
-import { createVoltpressFetch } from './client.js'
+import { createContenodeFetch } from './client.js'
 import { createCollectionService } from './modules/CollectionService/index.js'
 import { createGlobalService } from './modules/GlobalService/index.js'
 import { createManifestService } from './modules/ManifestService/index.js'
 
-export type VoltpressConfig = { apiUrl: string; deliveryToken: string }
+export type ContenodeConfig = { apiUrl: string; deliveryToken: string }
 
-export function createVoltpress(config: VoltpressConfig) {
-  const fetch = createVoltpressFetch(config)
+export function createContenode(config: ContenodeConfig) {
+  const fetch = createContenodeFetch(config)
   const manifestService = createManifestService(fetch)
 
   return {

@@ -1,7 +1,7 @@
-import type { VoltpressConfig } from './config.js'
+import type { ContenodeConfig } from './config.js'
 
-export function createVoltpressFetch(config: VoltpressConfig) {
-  return async function voltpressFetch<T>(path: string, query?: Record<string, string | number | undefined>): Promise<T> {
+export function createContenodeFetch(config: ContenodeConfig) {
+  return async function contenodeFetch<T>(path: string, query?: Record<string, string | number | undefined>): Promise<T> {
     const token = (config as { deliveryToken: string }).deliveryToken
     const url = new URL(`${config.apiUrl}${path}`)
 
@@ -22,7 +22,7 @@ export function createVoltpressFetch(config: VoltpressConfig) {
 
     if (!response.ok) {
       const body = await response.text()
-      throw new Error(`[voltpress/js] Request failed: ${response.status} ${response.statusText} — ${url.toString()} | body: ${body}`)
+      throw new Error(`[contenode/js] Request failed: ${response.status} ${response.statusText} — ${url.toString()} | body: ${body}`)
     }
 
     return response.json() as Promise<T>

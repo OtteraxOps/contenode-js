@@ -1,4 +1,4 @@
-export interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
+export interface IContenodeCollectionEntry<T = Record<string, unknown>> {
   id: string
   slug: string
   title: string
@@ -8,11 +8,11 @@ export interface IVoltpressCollectionEntry<T = Record<string, unknown>> {
   published_at: string | null
 }
 
-export type IVoltpressGlobal<T = Record<string, unknown>> = T & {
+export type IContenodeGlobal<T = Record<string, unknown>> = T & {
   updated_at: string
 }
 
-export interface IVoltpressMedia {
+export interface IContenodeMedia {
   id: string
   name: string
   file_url: string
@@ -20,7 +20,7 @@ export interface IVoltpressMedia {
   created_at: string
 }
 
-export interface IVoltpressPaginationMeta {
+export interface IContenodePaginationMeta {
   current_page: number
   last_page: number
   per_page: number
